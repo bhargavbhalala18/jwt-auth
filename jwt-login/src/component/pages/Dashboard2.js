@@ -25,21 +25,20 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     margin: "20px 0",
-    width: "200px",
   },
 }))
 
-const Dashboard2 = () => {
+const Dashboard_second = () => {
   const classes = useStyles()
   return (
     <Box className={classes.container}>
       <Paper style={{ width: "500px", border: "1px", borderRadius: "10px" }}>
-        <Typography className={classes.paper} variant="h4">
-          Welcome to Deshboard2
+        <Typography className={classes.paper} variant="h5">
+          Welcome to second deshboard
         </Typography>
       </Paper>
     </Box>
   )
 }
 
-export default Dashboard2
+export default Dashboard_second

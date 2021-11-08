@@ -3,7 +3,6 @@ import { Box, Paper, Button, TextField, Typography } from "@material-ui/core"
 import "react-toastify/dist/ReactToastify.css"
 import { toast } from "react-toastify"
 import { makeStyles } from "@material-ui/core/styles"
-import { blue } from "@material-ui/core/colors"
 import { useHistory } from "react-router-dom"
 import axiox from "axios"
 
@@ -36,32 +35,32 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Signup = ({ setLogoutUser }) => {
+const Signup = () => {
   const classes = useStyles()
-
   const history = useHistory()
-  const object = {
-    firstname: "",
-    lastname: "",
-    email: "",
-    password: "",
-  }
 
   const [error, setError] = useState("")
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+
   const userRegister = (e) => {
     e.preventDefault()
     if (name && email && password) {
       axiox
-        .post("http://restapi.adequateshop.com/api/authaccount/registration", {
+        .post("http://localhost:5000/api/auth/register", {
           name,
           email,
           password,
         })
         .then((response) => {
           console.log("signup==>", response)
+          localStorage.setItem(
+            "login",
+            JSON.stringify({
+              token: response.data.access_token,
+            })
+          )
           toast.success("User signup successfully", {
             position: toast.POSITION.TOP_CENTER,
             autoClose: 2000,
@@ -71,8 +70,10 @@ const Signup = ({ setLogoutUser }) => {
           setName("")
           setEmail("")
           setPassword("")
-          history.push("/login")
-          setLogoutUser(false)
+          setTimeout(() => {
+            history.push("/dashboard1")
+            window.location.reload()
+          }, 1000)
         })
         .catch((error) => setError(error))
     } else {
@@ -87,6 +88,7 @@ const Signup = ({ setLogoutUser }) => {
     <Box className={classes.container}>
       <Paper style={{ width: "500px", border: "1px", borderRadius: "10px" }}>
         <form onSubmit={userRegister} className={classes.form}>
+          {error && <p style={{ color: "red" }}>{error}</p>}
           <Typography variant="h5" style={{ marginTop: "10px" }}>
             SignUp Form
           </Typography>

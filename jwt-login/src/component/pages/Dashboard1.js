@@ -23,21 +23,19 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "column",
+    width: "500px",
   },
   button: {
     margin: "20px 0",
-    width: "200px",
   },
 }))
 
-const Dashboard1 = () => {
+const Dashboard_first = () => {
   const classes = useStyles()
   return (
     <Box className={classes.container}>
-      <Paper style={{ width: "500px", border: "1px", borderRadius: "10px" }}>
-        <Typography className={classes.paper} variant="h4">
-          Welcome to Dashboard1
-        </Typography>
+      <Paper className={classes.paper}>
+        <Typography variant="h4">Welcome to first dashboard</Typography>
         <Button
           className={classes.button}
           variant="contained"
@@ -46,11 +44,11 @@ const Dashboard1 = () => {
           to="/dashboard2"
           type="submit"
         >
-          Dashboard2
+          go to second dashboard
         </Button>
       </Paper>
     </Box>
   )
 }
 
-export default Dashboard1
+export default Dashboard_first

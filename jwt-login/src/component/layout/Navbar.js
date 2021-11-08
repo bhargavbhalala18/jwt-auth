@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react"
+import React from "react"
 import { makeStyles } from "@material-ui/core/styles"
 import { NavLink } from "react-router-dom"
-import PropTypes from "prop-types"
 import { useHistory } from "react-router-dom"
 
 import {
@@ -10,8 +9,6 @@ import {
   Button,
   Typography,
   Container,
-  useScrollTrigger,
-  Slide,
   Box,
 } from "@material-ui/core"
 import { grey } from "@material-ui/core/colors"
@@ -42,79 +39,41 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const HideOnScroll = (props) => {
-  const { children, window } = props
-  const trigger = useScrollTrigger({ target: window ? window() : undefined })
-
-  return (
-    <Slide appear={false} direction="down" in={!trigger}>
-      {children}
-    </Slide>
-  )
-}
-
-HideOnScroll.propTypes = {
-  children: PropTypes.element.isRequired,
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
-  window: PropTypes.func,
-}
-
-const Navbar = (props, { logoutUser, setLogoutUser }) => {
+const Navbar = (props) => {
   const classes = useStyles()
-  const [login, setLogin] = useState("")
   const history = useHistory()
 
-  useEffect(() => {
-    stateWithLocalStorage()
-  }, [logoutUser])
-
   const logout = () => {
-    localStorage.removeItem("login")
-    setLogoutUser(true)
-    history.push("./")
+    localStorage.clear()
+    history.push("/")
+    window.location.reload()
   }
 
-  const stateWithLocalStorage = () => {
-    if (localStorage.hasOwnProperty("login")) {
-      let value = localStorage.getItem("login")
-      try {
-        value = JSON.parse(value)
-        setLogin(value)
-      } catch (e) {
-        setLogin("")
-      }
-    }
-  }
   return (
     <>
-      <HideOnScroll {...props}>
-        <AppBar className={classes.appbar} position="sticky">
-          <Toolbar component={Container}>
-            <Typography variant="h5" className={classes.navLogo}>
-              UserName
-            </Typography>
-            <Box className={classes.linksWrapper}>
-              {!logoutUser && login && login.userLogin ? (
-                <Button className={classes.navLinks} onClick={logout}>
-                  Logout
-                </Button>
-              ) : (
-                <Button
-                  className={classes.navLinks}
-                  component={NavLink}
-                  exact
-                  to="/login"
-                >
-                  Login
-                </Button>
-              )}
-            </Box>
-          </Toolbar>
-        </AppBar>
-      </HideOnScroll>
+      <AppBar className={classes.appbar} position="sticky">
+        <Toolbar component={Container}>
+          <Typography variant="h5" className={classes.navLogo}>
+            UserName
+          </Typography>
+
+          <Box className={classes.linksWrapper}>
+            {localStorage.getItem("login") ? (
+              <Button className={classes.navLinks} onClick={logout}>
+                Logout
+              </Button>
+            ) : (
+              <Button
+                className={classes.navLinks}
+                component={NavLink}
+                to="/login"
+              >
+                Login
+              </Button>
+            )}
+          </Box>
+        </Toolbar>
+      </AppBar>
     </>
   )
 }

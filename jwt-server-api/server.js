@@ -31,7 +31,7 @@ function isRegisterAuthenticated({ email }) {
 }
 
 server.post("/api/auth/register", (req, res) => {
-  const { firstname, lastname, email, password } = req.body
+  const { name, email, password } = req.body
   if (isRegisterAuthenticated({ email })) {
     const status = 401
     const message = "Email already exist"
@@ -52,8 +52,7 @@ server.post("/api/auth/register", (req, res) => {
 
     data.users.push({
       id: last_item_id + 1,
-      firstname: firstname,
-      lastname: lastname,
+      name: name,
       email: email,
       password: password,
     })
@@ -70,6 +69,8 @@ server.post("/api/auth/register", (req, res) => {
       }
     )
   })
+  const access_token = createToken({ email, password })
+  res.status(200).json({ access_token })
 })
 
 server.post("/api/auth/login", (req, res) => {

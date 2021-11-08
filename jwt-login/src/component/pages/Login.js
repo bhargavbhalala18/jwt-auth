@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Login = () => {
   const classes = useStyles()
+
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
@@ -50,17 +51,20 @@ const Login = () => {
         localStorage.setItem(
           "login",
           JSON.stringify({
-            userLogin: true,
             token: response.data.access_token,
           })
         )
         setError("")
         setEmail("")
         setPassword("")
-        history.push("/dashboard")
+        setTimeout(() => {
+          history.push("/dashboard1")
+          window.location.reload()
+        }, 500)
       })
       .catch((error) => setError(error.response.data.message))
   }
+
   return (
     <Box className={classes.container}>
       <Paper style={{ width: "500px", border: "1px", borderRadius: "10px" }}>
